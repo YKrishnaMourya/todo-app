@@ -1,0 +1,39 @@
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Style for list items */
+  ul li {
+    margin-bottom: 10px; /* Adjust spacing between list items */
+  }
+  
+  /* Add bullets or other list markers */
+  ul li::before {
+    content: "\2022"; /* Bullet symbol */
+    color: #333; /* Bullet color */
+    display: inline-block;
+    width: 1em; /* Adjust the width as needed */
+    margin-left: -1em; /* Negative margin to align with text */
+    margin-right: 0.5em; /* Add space between bullet and text */
+  }
+  
+  /* Style for hover effect or active state */
+  ul li:hover {
+    background-color: #f5f5f5; /* Background color on hover */
+    cursor: pointer;
+  }
+  
+  /* Style for links within list items */
+  ul li a {
+    text-decoration: none;
+    color: #007bff; /* Link color */
+  }
+  
+  /* Style for list item bullet color on hover */
+  ul li:hover::before {
+    color: #ff5733; /* Change bullet color on hover */
+  }
+  
