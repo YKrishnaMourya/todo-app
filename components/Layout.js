@@ -2,8 +2,8 @@ import { useState } from "react";
 import AddTask from "./AddTask";
 import ShowTasks from "./ShowTasks";
 
-function Layout() {
-    const [tasks, setTasks] = useState([]);
+function Layout({tasks, changeTasks}) {
+    
     const [filter, setFilter] = useState("all");
     const taskList = filteredTasks(filter);
 
@@ -20,11 +20,11 @@ function Layout() {
 
     function tasksAdd(value) {
        const taskId = tasks.length ? tasks.length + 1 : 1;
-       setTasks([...tasks, {info:value, status:false, id:taskId}]);
+       changeTasks([...tasks, {info:value, status:false, id:taskId}]);
     }
     function tasksDelete(i) {
         const newTasks = tasks.filter(task => task.id !== i);
-        setTasks(newTasks);
+        changeTasks(newTasks);
     }
     function tasksUpdate(i, value) {
         const newTasks = tasks.map(task => {
@@ -33,7 +33,7 @@ function Layout() {
             }
             return task;
         })
-        setTasks(newTasks);
+        changeTasks(newTasks);
     }
     function changeTaskStatus(oldTask) {
         const newTasks = tasks.map(task => {
@@ -46,7 +46,7 @@ function Layout() {
             }
             return task;
         })
-        setTasks(newTasks);
+        changeTasks(newTasks);
     }
     
     return(
