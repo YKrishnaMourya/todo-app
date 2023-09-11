@@ -1,13 +1,15 @@
-function Counter({tasks}) {
+import { useSelector } from 'react-redux';
+function Counter() {
+    const tasks = useSelector((state) => state.tasks.tasksList);
     const totalTasks = tasks.length;
     const completedTasks = tasks.reduce((count, task) => {
-        if (task.status === true) {
+        if (task.completionStatus === true) {
             return count + 1;
         }
         else return count;
     }, 0);
     const pendingTasks = tasks.reduce((count, task) => {
-        if (task.status === false) {
+        if (task.completionStatus === false) {
             return count + 1;
         }
         else return count;

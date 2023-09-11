@@ -1,24 +1,29 @@
-import { useState } from "react";
-function AddTask({onChange}) {
-    const [task, setTask] = useState("");
-    const addTask = () => {
-        if (task === "")
+import { useDispatch , useSelector } from 'react-redux';
+import { addTask, updateNewTaskInfo } from "@/redux/features/tasksSlice";
+
+function AddTask() {
+    const dispatch = useDispatch();
+    const taskInfo = useSelector((state) => state.tasks.newTaskInfo);
+    
+    const handleAction = () => {
+        if (taskInfo === "")
             return;
-        onChange(task)
-        setTask("");
+        dispatch(addTask(taskInfo));
+        dispatch(updateNewTaskInfo(""));
     }
+
     function handleKeyDown(e) {
         if (e.key ==='Enter')
-            addTask(e.target.value);
+            handleAction();
     }
     return (
          <>
            <input type="text" 
-                  value={task} 
-                  onChange={e => setTask(e.target.value)}
+                  value={taskInfo} 
+                  onChange={e => dispatch(updateNewTaskInfo(e.target.value))}
                   onKeyDown={handleKeyDown}
             />
-            <button onClick={addTask}>Add</button>
+            <button onClick={handleAction}>Add</button>
         </>
     )
 }

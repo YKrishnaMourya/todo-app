@@ -1,10 +1,13 @@
-import { useState } from "react";
-function ShowTasks({tasks, onChange, onUpdate, changeTaskStatus}) {
-    const [status, setStatus] = useState(true);
-    const afterEdit = (info, i) => {
-        setStatus(true);
+import { useDispatch } from 'react-redux';
+import { deleteTask, updateTask, changeTaskStatus, changeIsEditable } from "@/redux/features/tasksSlice";
+
+function ShowTasks({tasks}) {
+    const dispatch = useDispatch();
+
+    const afterEdit = (info, i, value) => {
+        dispatch(changeIsEditable({id:i, value: !value}));
         if (info === "") {
-            onChange(i);
+            dispatch(deleteTask(i));
         }
     }
     
@@ -12,23 +15,23 @@ function ShowTasks({tasks, onChange, onUpdate, changeTaskStatus}) {
         return (
             <li key={task.id}>
                  <input type="checkbox" 
-                        checked={task.status === true} 
-                        onChange={() => changeTaskStatus(task)}
+                        checked={task.completionStatus === true} 
+                        onChange={() => dispatch(changeTaskStatus(task))}
                  />
                  <input type="text" 
                         value={task.info} 
-                        onChange={e => onUpdate(task.id, e.target.value)} 
+                        onChange={e => dispatch(updateTask({id: task.id, value: e.target.value}))} 
                         onKeyDown={(e) => {
                             if (e.key === 'Enter')
-                                afterEdit(task.info, task.id)
+                                afterEdit(task.info, task.id, task.isEditable)
                             }
                         }
-                        disabled={status}/>
-                 {status === true ?
+                        disabled={!task.isEditable}/>
+                 {task.isEditable === false ?
                  <>
-                    <button onClick={() => onChange(task.id)}> Delete</button>
-                    <button onClick={() => setStatus(false)}>Edit</button>
-                 </> : <button onClick={() => afterEdit(task.info, task.id)}>Add</button>
+                    <button onClick={() => dispatch(deleteTask(task.id))}> Delete</button>
+                    <button onClick={() => dispatch(changeIsEditable({id:task.id, value: !task.isEditable}))}>Edit</button>
+                 </> : <button onClick={() => afterEdit(task.info, task.id, task.isEditable)}>Add</button>
                 }
             </li>
         );
