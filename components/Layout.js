@@ -6,19 +6,9 @@ import Filter from "./Filters";
 function Layout() {
     const tasks = useSelector((state) => state.tasks.tasksList);
     const filter = useSelector((state) => state.tasks.filter)
-    const taskList = filteredTasks(filter);
-
-    function filteredTasks(filter) {
-        if (filter === "all")
-            return tasks.slice();
-        else if (filter === "completed") {
-            return tasks.filter(task => task.completionStatus === true);
-        }
-        else if (filter === "pending") {
-            return tasks.filter(task => task.completionStatus === false);
-        }
-    }
-    
+    const completedTaskList = tasks.filter(task => task.completionStatus === true);
+    const pendingTaskList = tasks.filter(task => task.completionStatus === false);
+   
     return(
         <>
          <h1>Todo-App</h1>
@@ -26,7 +16,12 @@ function Layout() {
          <br/>
          <Filter/>
          <br/>
-         <ShowTasks tasks={taskList}/>
+         {
+            (filter==="all" || filter ==="pending") &&  <ShowTasks tasks={pendingTaskList}/>
+         }
+         {
+            (filter==="all" || filter ==="completed") &&  <ShowTasks tasks={completedTaskList}/>
+         }
         </>
        
     )
